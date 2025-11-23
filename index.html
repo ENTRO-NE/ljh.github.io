@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is a Happy Life? - Apple White Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f5f5f7; /* Apple Light Grey Background */
+            color: #1d1d1f; /* Apple Text Black */
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Section Layout */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 6rem 2rem; /* Increased padding for better separation */
+            position: relative;
+        }
+
+        /* Container */
+        .container-custom {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Bento Card Styles - White Theme */
+        .bento-card {
+            background-color: #ffffff;
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04); /* Soft shadow */
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid rgba(0,0,0,0.02);
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .bento-card:hover {
+            transform: translateY(-5px) scale(1.005);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+            z-index: 20;
+        }
+
+        .bento-card.accent-dark {
+            background-color: #1d1d1f;
+            color: white;
+        }
+        
+        .bento-card.accent-color {
+            background: linear-gradient(135deg, #f5f5f7 0%, #ffffff 100%);
+        }
+
+        /* Grid Helpers */
+        .bento-grid {
+            display: grid;
+            gap: 24px;
+            width: 100%;
+        }
+
+        /* Typography */
+        .text-gradient {
+            background: linear-gradient(135deg, #1d1d1f 0%, #86868b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* New Apple "Air" Style Static Gradient Text */
+        .text-apple-air {
+            font-family: 'Pacifico', cursive;
+            font-weight: 400;
+            background: linear-gradient(90deg, #2997ff 0%, #985bd6 33%, #ff4b4b 66%, #ff9500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding-right: 0.1em;
+            letter-spacing: 0.02em;
+        }
+        
+        .text-gradient-color {
+            background: linear-gradient(135deg, #0071e3 0%, #42a5f5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* * ENHANCED SCROLL REVEAL ANIMATION 
+         * Apple-style: Blur + Scale + Fade
+         */
+        .reveal {
+            opacity: 0;
+            /* Start slightly down, scaled down, and blurred */
+            transform: translateY(40px) scale(0.96);
+            filter: blur(10px);
+            /* Smooth Apple-like easing */
+            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity, filter;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* Sticky Header Effect for Section 1 */
+        .hero-text {
+            font-size: clamp(3rem, 8vw, 7rem);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        /* Custom Icons */
+        .icon-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.5s ease;
+        }
+        
+        .bento-card:hover .icon-circle {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .bg-red-soft { background-color: #ffebeb; color: #ff3b30; }
+        .bg-blue-soft { background-color: #e8f2ff; color: #0071e3; }
+        .bg-green-soft { background-color: #ebf7eb; color: #34c759; }
+        .bg-yellow-soft { background-color: #fff9e6; color: #ffcc00; }
+
+        /* Scroll Down Indicator Animation */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+            z-index: 50; /* Ensure it is above other elements */
+        }
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+            40% {transform: translateX(-50%) translateY(-10px);}
+            60% {transform: translateX(-50%) translateY(-5px);}
+        }
+
+        /* Fullscreen Button Style */
+        #fullscreen-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ffffff;
+            color: #1d1d1f;
+            border: 1px solid #d2d2d7;
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+        }
+        #fullscreen-button:hover {
+            background-color: #f0f0f5;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+        #fullscreen-button i {
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fullscreen Toggle Button -->
+    <button id="fullscreen-button" onclick="toggleFullScreen()">
+        <i class="fas fa-expand"></i> 全屏演示
+    </button>
+
+    <!-- Section 1: Intro (Full Screen) -->
+    <section id="hero">
+        <div class="container-custom text-center">
+            <div class="reveal active">
+                <p class="text-gray-500 font-semibold tracking-[0.2em] uppercase mb-6 text-sm">Topic</p>
+                <h1 class="hero-text font-semibold mb-8 text-[#1d1d1f]">
+                    What is a <br><span class="text-apple-air">Happy Life?</span>
+                </h1>
+                <div class="inline-block px-6 py-2 rounded-full bg-white shadow-sm border border-gray-200 mt-8 hover:scale-105 transition-transform duration-300">
+                    <p class="text-sm font-medium text-gray-500">by ENTRO-NE</p>
+                </div>
+            </div>
+            
+            <!-- Arrow Navigation -->
+            <a href="#trilogy" class="scroll-indicator text-gray-400">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Section 2: The Trilogy (Bento Grid) -->
+    <section id="trilogy">
+        <div class="container-custom">
+            <div class="mb-16 text-center reveal">
+                <h2 class="text-4xl md:text-5xl font-semibold">It connects with...</h2>
+                <p class="text-xl text-gray-500 mt-4">A trilogy of happiness.</p>
+            </div>
+            
+            <div class="bento-grid grid-cols-1 md:grid-cols-3 grid-rows-2 h-auto md:h-[600px]">
+                <!-- Left Big Block -->
+                <div class="bento-card accent-dark col-span-1 md:col-span-1 md:row-span-2 reveal">
+                    <div class="flex flex-col justify-between h-full">
+                        <div class="text-6xl font-bold text-white/20">3</div>
+                        <div>
+                            <h3 class="text-3xl font-semibold text-white mb-2">Key Elements</h3>
+                            <p class="text-gray-400">The foundation of my personal definition.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Thing 1: Love -->
+                <div class="bento-card col-span-1 md:col-span-1 reveal delay-1 items-center text-center">
+                    <div class="icon-circle bg-red-soft"><i class="fas fa-heart"></i></div>
+                    <h3 class="text-2xl font-semibold text-[#1d1d1f]">Love</h3>
+                    <p class="text-gray-500 text-sm mt-2">Purest Happiness</p>
+                </div>
+                
+                <!-- Thing 2: Dream -->
+                <div class="bento-card col-span-1 md:col-span-1 reveal delay-2 items-center text-center">
+                    <div class="icon-circle bg-blue-soft"><i class="fas fa-star"></i></div>
+                    <h3 class="text-2xl font-semibold text-[#1d1d1f]">Dream</h3>
+                    <p class="text-gray-500 text-sm mt-2">Enthusiasm</p>
+                </div>
+                
+                <!-- Thing 3: Money (Wide) -->
+                <div class="bento-card col-span-1 md:col-span-2 reveal delay-3 flex-row items-center justify-between px-10">
+                    <div class="text-left">
+                        <div class="icon-circle bg-green-soft mb-4"><i class="fas fa-coins"></i></div>
+                        <h3 class="text-2xl font-semibold text-[#1d1d1f]">Money</h3>
+                        <p class="text-gray-500 text-sm">Realistic Foundation</p>
+                    </div>
+                    <div class="text-right hidden md:block">
+                        <p class="text-4xl font-bold text-gray-100">Freedom</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Arrow Navigation -->
+        <a href="#love-detail" class="scroll-indicator text-gray-400" onclick="scrollToNext(event, 'trilogy')">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </a>
+    </section>
+
+    <!-- Section 3: Love Detail -->
+    <section id="love-detail" class="bg-white">
+        <div class="container-custom">
+            <div class="bento-grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <p class="text-[#ff3b30] font-bold uppercase tracking-wider mb-2">First</p>
+                    <h2 class="text-5xl md:text-7xl font-semibold mb-6 text-[#1d1d1f]">Love.</h2>
+                    <div class="w-20 h-1 bg-[#ff3b30] rounded-full mb-8"></div>
+                    <p class="text-2xl leading-relaxed text-gray-500 font-medium">
+                        "More than just affection.<br>
+                        It's the love we express for <span class="text-[#1d1d1f] border-b-2 border-[#ff3b30]">everyone</span>."
+                    </p>
+                </div>
+                <div class="bento-card h-[400px] reveal delay-1 flex items-center justify-center bg-[#fff5f5]">
+                    <i class="fas fa-heart text-9xl text-[#ff3b30] opacity-20 transform group-hover:scale-110 transition-transform duration-500"></i>
+                    <h3 class="absolute text-3xl font-bold text-[#ff3b30]">Purest Happiness</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arrow Navigation -->
+        <a href="#dream-detail" class="scroll-indicator text-gray-400" onclick="scrollToNext(event, 'love-detail')">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </a>
+    </section>
+
+    <!-- Section 4: Dream Detail -->
+    <section id="dream-detail">
+        <div class="container-custom">
+            <div class="text-center mb-16 reveal">
+                <p class="text-[#0071e3] font-bold uppercase tracking-wider mb-2">Second</p>
+                <h2 class="text-5xl md:text-7xl font-semibold text-[#1d1d1f]">Dream.</h2>
+            </div>
+
+            <div class="bento-grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div class="bento-card col-span-12 md:col-span-8 reveal bg-white">
+                    <i class="fas fa-quote-left text-4xl text-gray-200 mb-6"></i>
+                    <blockquote class="text-3xl md:text-4xl font-medium text-[#1d1d1f] leading-tight">
+                        "People must have a dream, in case one day we make it."
+                    </blockquote>
+                    <p class="mt-6 text-gray-500 font-medium">— Jack Ma</p>
+                </div>
+                <div class="bento-card col-span-12 md:col-span-4 accent-dark reveal delay-1 text-center">
+                    <i class="fas fa-infinity text-5xl text-white mb-4 hover:rotate-180 transition-transform duration-700"></i>
+                    <p class="text-gray-400 font-medium">No Expiration Date</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arrow Navigation -->
+        <a href="#money-detail" class="scroll-indicator text-gray-400" onclick="scrollToNext(event, 'dream-detail')">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </a>
+    </section>
+
+    <!-- Section 5: Money Detail -->
+    <section id="money-detail" class="bg-white">
+        <div class="container-custom">
+            <div class="bento-grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                 <div class="bento-card h-[400px] reveal flex items-center justify-center bg-[#f0fdf4]">
+                    <i class="fas fa-dove text-9xl text-[#34c759] opacity-20"></i>
+                    <h3 class="absolute text-3xl font-bold text-[#34c759]">Freedom</h3>
+                </div>
+                <div class="reveal delay-1 text-right">
+                    <p class="text-[#34c759] font-bold uppercase tracking-wider mb-2">The Last One</p>
+                    <h2 class="text-5xl md:text-7xl font-semibold mb-6 text-[#1d1d1f]">Money.</h2>
+                    <div class="w-20 h-1 bg-[#34c759] rounded-full mb-8 ml-auto"></div>
+                    <p class="text-2xl leading-relaxed text-gray-500 font-medium">
+                        It may seem superficial, but it gives us the <span class="text-[#1d1d1f]">freedom</span> to chase our love and dream.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arrow Navigation -->
+        <a href="#conclusion" class="scroll-indicator text-gray-400" onclick="scrollToNext(event, 'money-detail')">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </a>
+    </section>
+
+    <!-- Section 6: Conclusion (Removed Footer) -->
+    <section id="conclusion" class="bg-white text-[#1d1d1f]"> 
+        <div class="container-custom text-center reveal">
+            <div class="icon-circle bg-yellow-soft mx-auto w-24 h-24 text-4xl mb-8 shadow-lg">
+                <i class="fas fa-key text-[#ffcc00]"></i>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-semibold mb-8">
+                Happy is the essence.
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
+                "If you are happy when you gain something, that's the key."
+            </p>
+        </div>
+
+        <!-- Arrow Navigation -->
+        <a href="#grand-finale" class="scroll-indicator text-gray-400" onclick="scrollToNext(event, 'conclusion')">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </a>
+    </section>
+
+    <!-- Section 7: Grand Finale (Consistent Style and Added Footer) -->
+    <section id="grand-finale" class="bg-[#f5f5f7] text-[#1d1d1f]">
+        <div class="container-custom text-center">
+            <div class="reveal">
+                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight">
+                    there is no ifs woulds coulds shoulds<br>
+                    it just is and we just are<br>
+                    and it is so
+                </h1>
+                <!-- 从 Section 6 移动过来的 Footer -->
+                <div class="mt-20 pt-10 border-t border-gray-200">
+                    <p class="text-sm text-gray-500">Designed by ENTRO-NE</p>
+                </div>
+            </div>
+        </div>
+        <!-- Note: No arrow navigation on the final slide -->
+    </section>
+
+    <script>
+        // Enhanced Intersection Observer for Bi-directional Animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '-50px', // Trigger slightly before element leaves/enters full view
+            threshold: 0.15      // Trigger when 15% visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                // Toggle 'active' class based on visibility
+                // This creates the effect of fading out when scrolling past
+                // and fading back in when scrolling back up
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, observerOptions);
+
+        // Apply reveal to all elements that need it, including the final section's text
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
+        });
+
+        // --- Logic for Next Section Arrow Navigation ---
+
+        // Map of section IDs in order
+        const sectionOrder = [
+            'hero',
+            'trilogy',
+            'love-detail',
+            'dream-detail',
+            'money-detail',
+            'conclusion',
+            'grand-finale'
+        ];
+
+        /**
+         * Smoothly scrolls to the next section in the defined order.
+         * This function is more robust than simple anchor links because it knows the order.
+         * @param {Event} event - The click event.
+         * @param {string} currentId - The ID of the current section.
+         */
+        function scrollToNext(event, currentId) {
+            event.preventDefault();
+            
+            const currentIndex = sectionOrder.indexOf(currentId);
+            const nextIndex = currentIndex + 1;
+
+            if (nextIndex < sectionOrder.length) {
+                const nextId = sectionOrder[nextIndex];
+                const nextElement = document.getElementById(nextId);
+                
+                if (nextElement) {
+                    nextElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+        
+        // --- Fullscreen Toggle Logic ---
+
+        const fullscreenButton = document.getElementById('fullscreen-button');
+
+        /**
+         * Toggles the fullscreen mode for the entire document body.
+         * Updates the button icon and text accordingly.
+         */
+        function toggleFullScreen() {
+            const doc = window.document;
+            const docEl = doc.documentElement;
+            const isFullScreen = doc.fullscreenElement || doc.mozFullScreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement;
+
+            try {
+                if (!isFullScreen) {
+                    // Request fullscreen with vendor prefixes
+                    const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+                    if (requestFullScreen) {
+                        requestFullScreen.call(docEl);
+                    } else {
+                        console.warn("Fullscreen API is not fully supported by this browser.");
+                    }
+                } else {
+                    // Exit fullscreen with vendor prefixes
+                    const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+                    if (cancelFullScreen) {
+                        cancelFullScreen.call(doc);
+                    }
+                }
+            } catch (error) {
+                console.error("Fullscreen Error:", error.name, error.message);
+                // 专门处理权限拒绝问题 (Permissions Policy)
+                if (error.name === 'SecurityError' || error.message.includes('permissions policy')) {
+                    console.error("权限被拒绝: 无法在当前沙盒环境中启用全屏。这通常是因为父级 iframe 缺少 'allow=\"fullscreen\"' 属性。");
+                }
+            }
+        }
+
+        /**
+         * Listens for fullscreen change events to update the button's appearance.
+         */
+        function fullscreenChangeHandler() {
+            const isFullScreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+            
+            if (isFullScreen) {
+                // 进入全屏时：隐藏按钮
+                fullscreenButton.style.display = 'none';
+                
+            } else {
+                // 退出全屏时：显示按钮，并重置文本/图标
+                fullscreenButton.style.display = 'flex';
+                fullscreenButton.innerHTML = `<i class="fas fa-expand"></i> 全屏演示`;
+            }
+            
+            // Note: 在进入全屏后，如果用户通过 ESC 键退出，
+            // 'isFullScreen' 会变为 false，按钮会自动重新显示。
+        }
+
+        // Add event listeners for fullscreen change
+        document.addEventListener('fullscreenchange', fullscreenChangeHandler);
+        document.addEventListener('mozfullscreenchange', fullscreenChangeHandler);
+        document.addEventListener('webkitfullscreenchange', fullscreenChangeHandler);
+        document.addEventListener('msfullscreenchange', fullscreenChangeHandler);
+    </script>
+</body>
+</html>
